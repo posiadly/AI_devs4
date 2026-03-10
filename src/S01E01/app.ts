@@ -2,7 +2,7 @@ import axios from "axios";
 import { parse } from "csv-parse/sync";
 import { Person } from "./types.js";
 import { applyFilters, buildAnswerRecords, createJobDescriptionInput, tagJobs } from "./utils/utils.js";
-import { OpenAIService } from "../tools/OpenAIService.js";
+import { OpenRouterService } from "../tools/OpenRouterService.js";
 import { selectedTag, tags } from "./const.js";
 import { Reporter } from "../tools/Reporter.js";
 import { extractFlag } from "../tools/FlagExtractor.js";
@@ -11,12 +11,13 @@ import fs from "fs";
 import { extraTask } from "./extraTask.js";
 
 async function main() {
-    const openaiApiKey = requireEnv("OPENAI_API_KEY");
     const url = requireEnv("S01E01_PEOPLE_URL");
     const verificationUrl = requireEnv("VERIFICATION_URL");
     const apiKey = requireEnv("API_KEY");
 
-    const openai = new OpenAIService(openaiApiKey);
+    // Use Open Router if OPENROUTER_API_KEY is set, otherwise OpenAI
+    const openRouterApiKey = process.env["OPENROUTER_API_KEY"];
+    const openRouter = new OpenRouterService(openRouterApiKey!);
     const reporter = new Reporter(verificationUrl, apiKey);
 
     const csvContent = (await axios.get(url)).data;
@@ -32,8 +33,8 @@ async function main() {
             context.column === "birthDate" ? new Date(value) : value,
     });
 
-    const filteredRecords = applyFilters(records);
-    const taggedJobs = await tagJobs(openai, tags, createJobDescriptionInput(filteredRecords));
+    /*const filteredRecords = applyFilters(records);
+    const taggedJobs = await tagJobs(openRouter, tags, createJobDescriptionInput(filteredRecords));
     const answerRecords = buildAnswerRecords(filteredRecords, taggedJobs, selectedTag);
 
     const verificationResult = await reporter.sendAnswer("people", answerRecords);
@@ -43,10 +44,10 @@ async function main() {
         console.log("✅ Flag found:", flag);
     } else {
         console.log("🛑 Flag not found");
-    }
+    }*/
 
     console.log("Running extra task...");
-    const anomalyResults = await extraTask(openai, records);
+    const anomalyResults = await extraTask(openRouter, records);
     console.log(anomalyResults);
 
 }

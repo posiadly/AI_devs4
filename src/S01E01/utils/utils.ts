@@ -1,6 +1,6 @@
 
 import { AnswerRecord, JobDescriptionInput, Person, TaggedJob, TaggedJobs } from "../types.js";
-import { OpenAIService } from "../../tools/OpenAIService.js";
+import { OpenRouterService } from "../../tools/OpenRouterService.js";
 import { tagPrompt } from "../prompts/tags.js";
 import { taggingSchema } from "../schemas/tag.js";
 
@@ -16,13 +16,13 @@ export function createJobDescriptionInput(records: Person[]): JobDescriptionInpu
     return records.map((row, index) => ({ id: index, jobDescription: row.job }));
 }
 
-export async function tagJobs(openai: OpenAIService, availableTags: string[], inputData: JobDescriptionInput[]): Promise<TaggedJob[]> {
+export async function tagJobs(openRouter: OpenRouterService, availableTags: string[], inputData: JobDescriptionInput[]): Promise<TaggedJob[]> {
     const prompt = tagPrompt(availableTags, inputData);
-    const response = await openai.parse<TaggedJobs>({
-        model: "gpt-4o",
+    const response = await openRouter.parse<TaggedJobs>({
+        model: "openai/gpt-4o",
         systemPrompt: prompt,
         responseFormat: taggingSchema
-    })
+    });
     return response.jobs;
 }
 

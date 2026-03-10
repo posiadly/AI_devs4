@@ -1,12 +1,12 @@
-import { OpenAIService } from "../tools/OpenAIService";
+import { OpenRouterService } from "../tools/OpenRouterService";
 import { Person } from "./types";
 import { anomalyDetectorPrompt } from "./prompts/anomalyDetector";
 
-export async function extraTask(openai: OpenAIService, records: Person[]) {
-    const chunks = makeChunks(records, 1000);
+export async function extraTask(openRouter: OpenRouterService, records: Person[]) {
+    const chunks = makeChunks(records, 500);
 
     const results = await Promise.all(chunks.map(
-        chunk => openai.query(anomalyDetectorPrompt, JSON.stringify(chunk), "gpt-4o-mini")));
+        chunk => openRouter.query({ model: "openai/gpt-4o-mini", systemPrompt: anomalyDetectorPrompt, userPrompt: JSON.stringify(chunk) })));
     return results;
 }
 

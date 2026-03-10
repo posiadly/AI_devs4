@@ -1,8 +1,9 @@
-import { ResponseFormatJSONSchema } from "openai/resources/shared.mjs";
+import { ResponseFormatJSONSchema } from "@openrouter/sdk/esm/models/responseformatjsonschema";
 
 export const taggingSchema: ResponseFormatJSONSchema = {
     type: "json_schema",
-    json_schema: {
+    jsonSchema
+        : {
         name: "JobTaggingResponse",
         strict: true,
         schema: {
