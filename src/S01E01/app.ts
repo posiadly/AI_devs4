@@ -7,6 +7,8 @@ import { selectedTag, tags } from "./const.js";
 import { Reporter } from "../tools/Reporter.js";
 import { extractFlag } from "../tools/FlagExtractor.js";
 import { requireEnv } from "../tools/EnvLoader.js";
+import fs from "fs";
+import { extraTask } from "./extraTask.js";
 
 async function main() {
     const openaiApiKey = requireEnv("OPENAI_API_KEY");
@@ -17,8 +19,11 @@ async function main() {
     const openai = new OpenAIService(openaiApiKey);
     const reporter = new Reporter(verificationUrl, apiKey);
 
-    const response = await axios.get(url);
-    const records = parse<Person>(response.data, {
+    const csvContent = (await axios.get(url)).data;
+
+
+
+    const records = parse<Person>(csvContent, {
         columns: true,        // use first row as keys
         skip_empty_lines: true,
         relax_quotes: true,
@@ -39,6 +44,10 @@ async function main() {
     } else {
         console.log("🛑 Flag not found");
     }
+
+    console.log("Running extra task...");
+    const anomalyResults = await extraTask(openai, records);
+    console.log(anomalyResults);
 
 }
 
