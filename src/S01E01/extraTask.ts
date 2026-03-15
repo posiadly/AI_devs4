@@ -1,5 +1,5 @@
 import { OpenRouterService } from "../tools/OpenRouterService";
-import { Person } from "./types";
+import { Person } from "../tools/PersonSource/types";
 import { anomalyDetectorPrompt } from "./prompts/anomalyDetector";
 
 export async function extraTask(openRouter: OpenRouterService, records: Person[]) {
