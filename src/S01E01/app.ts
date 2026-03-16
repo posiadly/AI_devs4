@@ -14,7 +14,6 @@ async function main() {
     const verificationUrl = requireEnv("VERIFICATION_URL");
     const apiKey = requireEnv("API_KEY");
 
-    // Use Open Router if OPENROUTER_API_KEY is set, otherwise OpenAI
     const openRouterApiKey = process.env["OPENROUTER_API_KEY"];
     const openRouter = new OpenRouterService(openRouterApiKey!);
     const reporter = new Reporter(verificationUrl, apiKey);

@@ -1,4 +1,4 @@
-import { Person, PersonWithTags } from "./types";
+import { ExtendedPerson, Person } from "./types";
 import { JobDescriptionInput, TaggedJob, TaggedJobs } from "./types";
 import { parse } from "csv-parse/sync";
 import { OpenRouterService } from "../OpenRouterService";
@@ -8,11 +8,11 @@ import { taggingSchema } from "./schemas/tag";
 
 
 export class PersonSource {
-    private persons: PersonWithTags[] = [];
+    private persons: ExtendedPerson[] = [];
     public constructor(private openRouter: OpenRouterService) {
     }
 
-    public getPersons(): PersonWithTags[] {
+    public getPersons(): ExtendedPerson[] {
         return this.persons;
     }
     public async load(url: string) {
@@ -32,7 +32,7 @@ export class PersonSource {
 
         const filteredRecords = this.applyFilters(records);
         const taggedJobs = await this.tagJobs(tags, this.createJobDescriptionInput(filteredRecords));
-        this.persons = this.selectPersons(filteredRecords, taggedJobs, selectedTag);
+        this.persons = this.selectPersons(filteredRecords, taggedJobs, selectedTag).map((person) => ({ ...person, birthYear: person.birthDate.getFullYear() }));
 
     }
 
@@ -55,15 +55,15 @@ export class PersonSource {
         return records.map((row, index) => ({ id: index, jobDescription: row.job }));
     }
 
-    private selectPersons(records: Person[], taggedJobs: TaggedJob[], selectedTag: string): PersonWithTags[] {
+    private selectPersons(records: Person[], taggedJobs: TaggedJob[], selectedTag: string): ExtendedPerson[] {
         const byId = new Map(taggedJobs.map((t) => [t.id, t]));
         return records
             .map((record, index) => {
                 const tagged = byId.get(index);
                 if (!tagged?.tags.includes(selectedTag)) return null;
-                return { ...record, tags: tagged.tags };
+                return { ...record, tags: tagged.tags, birthYear: record.birthDate.getFullYear() };
             })
-            .filter((r): r is PersonWithTags => r !== null);
+            .filter((r): r is ExtendedPerson => r !== null);
     }
 }
 

@@ -1,12 +1,10 @@
 
 import { AnswerRecord } from "../types.js";
-import { Person, PersonWithTags, TaggedJob } from "../../tools/PersonSource/types.js";
-import { OpenRouterService } from "../../tools/OpenRouterService.js";
-import { tagPrompt } from "../../tools/PersonSource/prompts/tags.js";
-import { taggingSchema } from "../../tools/PersonSource/schemas/tag.js";
+import { ExtendedPerson } from "../../tools/PersonSource/types.js";
 
 
-export function buildAnswerRecords(records: PersonWithTags[]): AnswerRecord[] {
+
+export function buildAnswerRecords(records: ExtendedPerson[]): AnswerRecord[] {
     return records
         .map((record) => {
             return {

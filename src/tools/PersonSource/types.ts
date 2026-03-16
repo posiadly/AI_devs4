@@ -8,8 +8,9 @@ export interface Person {
     job: string;
 }
 
-export interface PersonWithTags extends Person {
+export interface ExtendedPerson extends Person {
     tags: string[]
+    birthYear: number
 }
 
 export interface JobDescriptionInput {
