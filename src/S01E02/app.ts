@@ -11,6 +11,7 @@ import { AgentResult } from "./types.js";
 import { extractFlag } from "../tools/FlagExtractor.js";
 import { buildAnswerRecords } from "./tools/utils.js";
 import { Reporter } from "../tools/Reporter.js";
+import { extraTask } from "./extraTask.js";
 
 const MAX_TOOL_STEPS = 20;
 
@@ -73,12 +74,24 @@ async function main() {
     const answerRecords = buildAnswerRecords(agentResult!);
     const verificationResult = await reporter.sendAnswer("findhim", answerRecords);
 
-    const flag = extractFlag(verificationResult.message);
+    let flag = extractFlag(verificationResult.message);
+
     if (flag) {
         console.log("✅ Flag found:", flag);
     } else {
         console.log("🛑 Flag not found");
     }
+
+    console.log("Running extra task...");
+    const extraTaskResult = await extraTask(handlers["get_access_level"]);
+    flag = extractFlag(extraTaskResult);
+    if (flag) {
+        console.log("✅ Flag found:", flag);
+    } else {
+        console.log("🛑 Flag not found");
+    }
+
+
 }
 
 main().catch((error) => {
