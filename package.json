@@ -6,7 +6,9 @@
   "scripts": {
     "build": "tsc",
     "s01e01": "node dist/S01E01/app.js",
-    "s01e02": "node dist/S01E02/app.js"
+    "s01e02": "node dist/S01E02/app.js",
+    "s01e03s": "node dist/S01E03/Server/app.js",
+    "s01e03h": "node dist/S01E03/Host/app.js"
   },
   "repository": {
     "type": "git",
@@ -19,14 +21,18 @@
   },
   "homepage": "https://github.com/posiadly/AI_devs4#readme",
   "devDependencies": {
+    "@types/express": "^5.0.6",
     "@types/node": "^25.4.0",
     "typescript": "^5.9.3"
   },
   "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.27.1",
     "@openrouter/sdk": "^0.9.11",
     "axios": "^1.13.6",
     "csv-parse": "^6.1.0",
     "dotenv": "^17.3.1",
-    "geolib": "^3.3.4"
+    "express": "^5.2.1",
+    "geolib": "^3.3.4",
+    "zod": "^4.3.6"
   }
 }
