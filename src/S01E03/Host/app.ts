@@ -17,11 +17,13 @@ const app = express();
 app.use(express.json());
 app.post("/chat", async (req, res) => {
     const chatRequest = req.body as ChatRequest;
+    console.log("Chat request:", chatRequest.msg);
     const match = String(req.body.msg).match(/\{FLG:([^}]+)\}/);
     if (match) {
         const flag = match[0];   // e.g. "{FLG:FABRICATOR}"
         console.log("Flag:", flag);
     }
+
 
     let agent: Agent;
     if (agents.has(chatRequest.sessionID)) {
@@ -34,6 +36,7 @@ app.post("/chat", async (req, res) => {
     const message = await agent.message(chatRequest.msg);
 
     const chatResponse: ChatResponse = { msg: message! };
+    console.log("Chat response:", chatResponse.msg);
     res.json(chatResponse);
 });
 
