@@ -3,8 +3,11 @@ import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/
 import { randomUUID } from "crypto";
 import express from "express";
 import { createServer } from "./createServer.js";
+import { requireEnv } from "../../tools/EnvLoader.js";
 
 
+const packageApiUrl = requireEnv("S01E03_PACKAGE_API_URL");
+const apikey = requireEnv("API_KEY");
 
 const app = express();
 app.use(express.json());
@@ -32,7 +35,7 @@ app.post("/mcp", async (req, res) => {
         if (sessionId && transports.has(sessionId)) {
             transport = transports.get(sessionId)!;
         } else if (!sessionId) {
-            const server = createServer();
+            const server = createServer(apikey, packageApiUrl);
             const sessionId = randomUUID();
 
             transport = new StreamableHTTPServerTransport({
