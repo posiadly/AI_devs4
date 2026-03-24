@@ -3,13 +3,16 @@
   "version": "1.0.0",
   "description": "Solution of tasks from AI_devs 4 course",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "build": "tsc",
     "s01e01": "node dist/S01E01/app.js",
     "s01e02": "node dist/S01E02/app.js",
     "s01e03s": "node dist/S01E03/Server/app.js",
     "s01e03h": "node dist/S01E03/Host/app.js",
-    "s01e03r": "node dist/S01E03/Reporter/app.js"
+    "s01e03r": "node dist/S01E03/Reporter/app.js",
+    "s01e04h": "node dist/S01E04/Host/app.js",
+    "s01e04s": "node dist/S01E04/Server/app.js"
   },
   "repository": {
     "type": "git",
