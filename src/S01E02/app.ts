@@ -1,7 +1,7 @@
 import { requireEnv } from "../tools/EnvLoader.js";
 import { OpenRouterService } from "../tools/OpenRouterService.js";
 import { PersonSource } from "../tools/PersonSource/PersonSource.js";
-import type { Message } from "@openrouter/sdk/esm/models/message";
+import type { Message } from "@openrouter/sdk/models/message";
 import { prepareHandlers } from "./handlers.js";
 import { agentPrompt } from "./prompts/agent.js";
 import { allTools } from "./schemas/handlers.js";

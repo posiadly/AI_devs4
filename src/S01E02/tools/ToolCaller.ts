@@ -1,4 +1,4 @@
-import { ChatMessageToolCall, ToolResponseMessage } from "@openrouter/sdk/esm/models";
+import { ChatMessageToolCall, ToolResponseMessage } from "@openrouter/sdk/models";
 
 export class ToolCaller {
     constructor(private toolHandlers: any) {

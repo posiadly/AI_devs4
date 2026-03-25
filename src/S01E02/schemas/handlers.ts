@@ -1,4 +1,4 @@
-import type { ToolDefinitionJson } from "@openrouter/sdk/esm/models/tooldefinitionjson";
+import type { ToolDefinitionJson } from "@openrouter/sdk/models/tooldefinitionjson";
 
 export const getPowerPlantsTool: ToolDefinitionJson = {
     type: "function",

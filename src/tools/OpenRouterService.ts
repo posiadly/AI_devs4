@@ -1,8 +1,8 @@
 import { OpenRouter } from "@openrouter/sdk";
-import { ChatMessageToolCall, OpenResponsesFunctionToolCall } from "@openrouter/sdk/esm/models";
-import type { Message } from "@openrouter/sdk/esm/models/message";
-import type { ResponseFormatJSONSchema } from "@openrouter/sdk/esm/models/responseformatjsonschema";
-import type { ToolDefinitionJson } from "@openrouter/sdk/esm/models/tooldefinitionjson";
+import { ChatMessageToolCall, OpenResponsesFunctionToolCall } from "@openrouter/sdk/models";
+import type { Message } from "@openrouter/sdk/models/message";
+import type { ResponseFormatJSONSchema } from "@openrouter/sdk/models/responseformatjsonschema";
+import type { ToolDefinitionJson } from "@openrouter/sdk/models/tooldefinitionjson";
 
 
 export class OpenRouterService {
@@ -31,7 +31,7 @@ export class OpenRouterService {
         return JSON.parse(result.choices[0].message.content!) as T;
     }
 
-    public async ask({ model = "openai/gpt-4", messages, tools, responseFormat   }: { model?: string, messages: Message[], tools?: ToolDefinitionJson[], responseFormat?: ResponseFormatJSONSchema }): Promise<{ toolCalls?: ChatMessageToolCall[], message?: string }> {
+    public async ask({ model = "openai/gpt-4", messages, tools, responseFormat }: { model?: string, messages: Message[], tools?: ToolDefinitionJson[], responseFormat?: ResponseFormatJSONSchema }): Promise<{ toolCalls?: ChatMessageToolCall[], message?: string }> {
         const result = await this.client.chat.send({
             chatGenerationParams: {
                 model: model,

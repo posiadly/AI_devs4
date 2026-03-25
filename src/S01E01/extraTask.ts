@@ -1,7 +1,7 @@
-import { OpenRouterService } from "../tools/OpenRouterService";
-import { Person } from "../tools/PersonSource/types";
-import { anomalyDetectorPrompt } from "./prompts/anomalyDetector";
-import type { Message } from "@openrouter/sdk/esm/models/message";
+import { OpenRouterService } from "../tools/OpenRouterService.js";
+import { Person } from "../tools/PersonSource/types.js";
+import { anomalyDetectorPrompt } from "./prompts/anomalyDetector.js";
+import type { Message } from "@openrouter/sdk/models/message.js";
 
 export async function extraTask(openRouter: OpenRouterService, records: Person[]) {
     const chunks = makeChunks(records, 500);

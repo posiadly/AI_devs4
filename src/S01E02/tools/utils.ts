@@ -1,5 +1,5 @@
-import { AnswerRecord } from "../types";
-import { AgentResult } from "../types";
+import { AnswerRecord } from "../types.js";
+import { AgentResult } from "../types.js";
 
 export function buildAnswerRecords(agentResult: AgentResult): AnswerRecord {
     return {

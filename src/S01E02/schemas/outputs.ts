@@ -1,4 +1,4 @@
-import type { ResponseFormatJSONSchema } from "@openrouter/sdk/esm/models/responseformatjsonschema";
+import type { ResponseFormatJSONSchema } from "@openrouter/sdk/models/responseformatjsonschema";
 
 export const locationsOutputSchema: ResponseFormatJSONSchema = {
     type: "json_schema",

@@ -1,9 +1,9 @@
-import { Message } from "@openrouter/sdk/esm/models/message";
+import { Message } from "@openrouter/sdk/models/message";
 import { OpenRouterService } from "../../tools/OpenRouterService.js";
 import { agentPrompt } from "./prompt.js";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
-import { ToolDefinitionJson } from "@openrouter/sdk/esm/models/tooldefinitionjson";
-import { ToolResponseMessage } from "@openrouter/sdk/esm/models";
+import { ToolDefinitionJson } from "@openrouter/sdk/models/tooldefinitionjson";
+import { ToolResponseMessage } from "@openrouter/sdk/models";
 
 
 export class Agent {

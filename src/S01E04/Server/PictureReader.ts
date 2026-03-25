@@ -1,5 +1,7 @@
-import { Message } from "@openrouter/sdk/esm/models/message.js";
+
 import { OpenRouterService } from "../../tools/OpenRouterService.js";
+import { Message, UserMessage, ChatMessageContentItemImage, ChatMessageContentItemImageType } from "@openrouter/sdk/models";
+
 
 export class PictureReader {
     constructor(private openRouter: OpenRouterService) {
@@ -10,12 +12,12 @@ export class PictureReader {
         const dataUrl = this.toDataUrl(binaryData, mimeType);
         const information = await this.openRouter.ask({
             model: "openai/gpt-4.1", messages: [
-                { role: "system", content: prompt },
+                { role: "system", content: prompt } as Message,
                 {
                     role: "user",
-                    content: [{ type: "image_url", image_url: { url: dataUrl } }]
-                }
-            ] as Message[]
+                    content: [{ type: ChatMessageContentItemImageType.ImageUrl, imageUrl: { url: dataUrl } } as ChatMessageContentItemImage]
+                } as UserMessage
+            ]
         });
         return information.message!;
     }
