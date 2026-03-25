@@ -1,10 +1,10 @@
-import { ExtendedPerson, Person } from "./types";
-import { JobDescriptionInput, TaggedJob, TaggedJobs } from "./types";
+import { ExtendedPerson, Person } from "./types.js"
+import { JobDescriptionInput, TaggedJob, TaggedJobs } from "./types.js";
 import { parse } from "csv-parse/sync";
-import { OpenRouterService } from "../OpenRouterService";
-import { tagPrompt } from "./prompts/tags";
-import { selectedTag, tags } from "./const";
-import { taggingSchema } from "./schemas/tag";
+import { OpenRouterService } from "../OpenRouterService.js";
+import { tagPrompt } from "./prompts/tags.js";
+import { selectedTag, tags } from "./const.js";
+import { taggingSchema } from "./schemas/tag.js";
 
 
 export class PersonSource {

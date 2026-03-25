@@ -1,10 +1,10 @@
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/client/streamableHttp.js";
 import express from "express";
-import { ChatRequest, ChatResponse } from "../types";
+import { ChatRequest, ChatResponse } from "../types.js";
 import { Agent } from "./Agent.js";
 import { OpenRouterService } from "../../tools/OpenRouterService.js";
-import { requireEnv } from "../../tools/EnvLoader";
+import { requireEnv } from "../../tools/EnvLoader.js";
 
 
 const openRouterApiKey = requireEnv("OPENROUTER_API_KEY");

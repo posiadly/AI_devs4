@@ -1,9 +1,9 @@
-import { PersonSource } from "../tools/PersonSource/PersonSource";
-import { Person } from "../tools/PersonSource/types";
-import { AccessLevel, DistanceQuery, DistanceResult, Location, PersonLocations, PowerPlant } from "./types";
-import { OpenRouterService } from "../tools/OpenRouterService";
-import { locationPrompt } from "./prompts/locationPrompt";
-import { locationsOutputSchema } from "./schemas/outputs";
+import { PersonSource } from "../tools/PersonSource/PersonSource.js";
+import { Person } from "../tools/PersonSource/types.js";
+import { AccessLevel, DistanceQuery, DistanceResult, Location, PersonLocations, PowerPlant } from "./types.js";
+import { OpenRouterService } from "../tools/OpenRouterService.js";
+import { locationPrompt } from "./prompts/locationPrompt.js";
+import { locationsOutputSchema } from "./schemas/outputs.js";
 import { getDistance } from "geolib";
 
 export function prepareHandlers(apiKey: string, openRouter: OpenRouterService, findHimLocationsUrl: string, locationUrl: string, accessLevelUrl: string, personSource: PersonSource) {

@@ -5,10 +5,13 @@ import express from "express";
 import { createServer } from "./createServer.js";
 import { requireEnv } from "../../tools/EnvLoader.js";
 import { Initializer } from "./Initializer.js";
+import { OpenRouterService } from "../../tools/OpenRouterService.js";
 
 
 const filesDirectory = requireEnv("S01E04_FILES_DIRECTORY");
 const documentationUrl = requireEnv("S01E04_DOCUMENTATION_URL");
+const openRouterApiKey = requireEnv("OPENROUTER_API_KEY");
+const openRouter = new OpenRouterService(openRouterApiKey);
 
 const app = express();
 app.use(express.json());
@@ -37,7 +40,7 @@ app.post("/mcp", async (req, res) => {
         if (sessionId && transports.has(sessionId)) {
             transport = transports.get(sessionId)!;
         } else if (!sessionId) {
-            const server = createServer(filesDirectory, documentationUrl);
+            const server = createServer(filesDirectory, documentationUrl, openRouter);
             const sessionId = randomUUID();
 
             transport = new StreamableHTTPServerTransport({
