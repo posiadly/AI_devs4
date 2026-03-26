@@ -5,9 +5,11 @@ import { Agent } from "./Agent.js";
 import { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/client/streamableHttp.js";
 import { extractFlag } from "../../tools/FlagExtractor.js";
 import { Reporter } from "../../tools/Reporter.js";
+import { extraTask } from "./extraTast.js";
 
 async function main() {
 
+    const documentationUrl = requireEnv("S01E04_DOCUMENTATION_URL");
     const openRouterApiKey = requireEnv("OPENROUTER_API_KEY");
     const verificationUrl = requireEnv("VERIFICATION_URL");
     const apiKey = requireEnv("API_KEY");
@@ -18,7 +20,7 @@ async function main() {
     client.connect(transport);
 
 
-    const documentationUrl = requireEnv("S01E04_DOCUMENTATION_URL");
+
     const mainFile = requireEnv("S01E04_MAIN_FILE");
     const documentation = await (await fetch(`${documentationUrl}/${mainFile}`)).text();
     const agent = new Agent(openRouter, client);
@@ -32,6 +34,15 @@ async function main() {
 
     let flag = extractFlag(verificationResult.message);
 
+    if (flag) {
+        console.log("✅ Flag found:", flag);
+    } else {
+        console.log("🛑 Flag not found");
+    }
+
+    console.log("Running extra task...");
+    const extraTaskResult = await extraTask(documentationUrl);
+    flag = extractFlag(extraTaskResult);
     if (flag) {
         console.log("✅ Flag found:", flag);
     } else {
