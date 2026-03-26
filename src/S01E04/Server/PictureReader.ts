@@ -10,7 +10,7 @@ export class PictureReader {
     public async readPicture(binaryData: Buffer, mimeType: string, prompt: string): Promise<string> {
 
         const dataUrl = this.toDataUrl(binaryData, mimeType);
-        const information = await this.openRouter.ask({
+        const response = await this.openRouter.ask({
             model: "openai/gpt-4.1", messages: [
                 { role: "system", content: prompt } as Message,
                 {
@@ -19,7 +19,7 @@ export class PictureReader {
                 } as UserMessage
             ]
         });
-        return information.message!;
+        return response.message!;
     }
 
     private toDataUrl(binaryData: Buffer, mimeType: string): string {

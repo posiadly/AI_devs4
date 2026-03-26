@@ -10,7 +10,7 @@ export class Initializer {
             fs.mkdirSync(this.filesDirectory, { recursive: true });
         } else {
             fs.readdirSync(this.filesDirectory).forEach(file => {
-                //fs.unlinkSync(path.join(this.filesDirectory, file));
+                fs.unlinkSync(path.join(this.filesDirectory, file));
             });
         }
     }

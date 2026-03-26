@@ -34,7 +34,7 @@ export class Agent {
             stepsRemaining -= 1;
 
             const response = await this.openRouter.ask({
-                model: "openai/gpt-4.1", messages: this.conversation,
+                model: "google/gemini-2.5-pro", messages: this.conversation,
                 tools: this.openRouterTools
 
             });
@@ -47,7 +47,7 @@ export class Agent {
                     });
                     return {
                         role: "tool",
-                        content: result.content!,
+                        content: JSON.stringify(result.structuredContent!),
                         toolCallId: tc.id,
                     } as ToolResponseMessage;
                 }));
@@ -65,11 +65,10 @@ export class Agent {
                     role: "assistant",
                     content: response.message!,
                 } as Message);
+                console.log('Conversation:', this.conversation);
                 return response.message!;
             }
-
-            console.log("Conversation:", this.conversation);
-
+            //console.log("Conversation:", this.conversation);
         }
     }
 }

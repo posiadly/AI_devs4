@@ -22,8 +22,8 @@ export function createServer(filesDirectory: string, documentationUrl: string, o
         },
         async ({ fileName }) => {
             const response = await fetch(`${documentationUrl}/${fileName}`);
-            const data = await response.text();
-            fs.writeFileSync(path.join(filesDirectory, fileName), data);
+            const buffer = Buffer.from(await response.arrayBuffer());
+            fs.writeFileSync(path.join(filesDirectory, fileName), buffer);
             return {
                 content: [{ type: 'text', text: `File ${fileName} downloaded successfully` }],
                 structuredContent: {
@@ -54,8 +54,28 @@ export function createServer(filesDirectory: string, documentationUrl: string, o
             const pictureReader = new PictureReader(openRouter);
             const information = await pictureReader.readPicture(picture, mimeType, prompt);
             return {
-                content: [{ type: 'text', text: `Content of the picture: ${information} retrieved successfully.` }],
+                content: [{ type: 'text', text: `Content of the picture: ${pictureFileName} retrieved successfully.` }],
                 structuredContent: { information: information }
+            };
+        }
+    );
+    server.registerTool(
+        'read-text-file',
+        {
+            title: 'Read text file',
+            description: 'Read a text file and return its content',
+            inputSchema: z.object({
+                fileName: z.string()
+            }),
+            outputSchema: z.object({
+                content: z.string()
+            })
+        },
+        async ({ fileName }) => {
+            const content = fs.readFileSync(path.join(filesDirectory, fileName), 'utf8');
+            return {
+                content: [{ type: 'text', text: `File ${fileName} read successfully` }],
+                structuredContent: { content: content }
             };
         }
     );

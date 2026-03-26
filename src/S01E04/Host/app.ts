@@ -3,10 +3,15 @@ import { requireEnv } from "../../tools/EnvLoader.js";
 import { OpenRouterService } from "../../tools/OpenRouterService.js";
 import { Agent } from "./Agent.js";
 import { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/client/streamableHttp.js";
+import { extractFlag } from "../../tools/FlagExtractor.js";
+import { Reporter } from "../../tools/Reporter.js";
 
 async function main() {
 
     const openRouterApiKey = requireEnv("OPENROUTER_API_KEY");
+    const verificationUrl = requireEnv("VERIFICATION_URL");
+    const apiKey = requireEnv("API_KEY");
+
     const openRouter = new OpenRouterService(openRouterApiKey);
     const client = new Client({ name: "mcp_client", version: "1.0.0" });
     const transport = new StreamableHTTPClientTransport(new URL("http://localhost:3000/mcp"));
@@ -19,8 +24,22 @@ async function main() {
     const agent = new Agent(openRouter, client);
     await agent.init();
 
-    const message = await agent.message(documentation);
-    console.log(message);
+    const declaration = await agent.message(`Dokumentacja:\n${documentation}`);
+    console.log(declaration);
+
+    const reporter = new Reporter(verificationUrl, apiKey);
+    const verificationResult = await reporter.sendAnswer("sendit", { declaration: declaration });
+
+    let flag = extractFlag(verificationResult.message);
+
+    if (flag) {
+        console.log("✅ Flag found:", flag);
+    } else {
+        console.log("🛑 Flag not found");
+    }
+
+
+
 
 }
 

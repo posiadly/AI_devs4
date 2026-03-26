@@ -52,6 +52,7 @@ app.post("/mcp", async (req, res) => {
 
             await server.connect(transport);
             await transport.handleRequest(req, res, req.body);
+            return;
         } else {
             res.status(400).json({ error: `Session ${sessionId} not found` });
             return;
