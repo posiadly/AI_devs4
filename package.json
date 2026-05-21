@@ -12,7 +12,8 @@
     "s01e03h": "node dist/S01E03/Host/app.js",
     "s01e03r": "node dist/S01E03/Reporter/app.js",
     "s01e04h": "node dist/S01E04/Host/app.js",
-    "s01e04s": "node dist/S01E04/Server/app.js"
+    "s01e04s": "node dist/S01E04/Server/app.js",
+    "s01e05": "node dist/S01E05/app.js"
   },
   "repository": {
     "type": "git",
