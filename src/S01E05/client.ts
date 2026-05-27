@@ -5,8 +5,11 @@ import { fileURLToPath } from "url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-export const createClient = async (verificationUrl: string, apiKey: string) => {
+export const createClient = async (verificationUrl: string, apiKey: string, fixedWaitTime?: number) => {
+
     const client = new Client({ name: "mcp_client", version: "1.0.0" });
+
+    const fixedWaitTimeEnv: string = fixedWaitTime ? fixedWaitTime.toString() : "";
 
     // Spawn the server as a child process and connect over stdio
     const transport = new StdioClientTransport({
@@ -15,6 +18,7 @@ export const createClient = async (verificationUrl: string, apiKey: string) => {
         env: {
             VERIFICATION_URL: verificationUrl,
             API_KEY: apiKey,
+            FIXED_WAIT_TIME: fixedWaitTimeEnv,
         },
     })
     await client.connect(transport);

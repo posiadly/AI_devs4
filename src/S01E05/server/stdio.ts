@@ -8,16 +8,16 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 const createServer = (apiUrl: string, apiKey: string) => {
     const server = new McpServer({ name: 'my-server', version: '1.0.0' });
 
-    tools(apiUrl, apiKey).forEach(tool => {
-        server.registerTool(tool.name, tool.config, tool.handler);
-    });
+    const { apiCaller, wait: waitTool } = tools(apiUrl, apiKey);
+    server.registerTool(apiCaller.name, apiCaller.config, apiCaller.handler);
+    server.registerTool(waitTool.name, waitTool.config, waitTool.handler);
     return server;
 }
 
 const main = async () => {
     const server = createServer(
         requireEnv("VERIFICATION_URL"),
-        requireEnv("API_KEY"),
+        requireEnv("API_KEY")
     );
 
     await server.connect(new StdioServerTransport());
