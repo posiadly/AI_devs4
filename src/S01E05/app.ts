@@ -4,6 +4,7 @@ import { createClient } from "./client.js";
 import { createAgent } from "./agent.js";
 import { agentPrompt } from "./prompt.js";
 import { extractFlag } from "../tools/FlagExtractor.js";
+import { extraTask } from "./extraTask.js";
 
 async function main() {
 
@@ -24,7 +25,17 @@ async function main() {
         maxToolRounds: 20
     });
     const result = await agent.query("Aktywuj trasę kolejową o nazwie X-01.");
-    const flag = extractFlag(result);
+    let flag = extractFlag(result);
+    if (flag) {
+        console.log("✅ Flag found:", flag);
+    } else {
+        console.log("🛑 Flag not found");
+    }
+
+    console.log("Running extra task...");
+
+    const extraTaskResult = await extraTask(verificationUrl, apiKey);
+    flag = extractFlag(extraTaskResult);
     if (flag) {
         console.log("✅ Flag found:", flag);
     } else {
