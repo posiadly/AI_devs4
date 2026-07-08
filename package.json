@@ -13,7 +13,9 @@
     "s01e03r": "node dist/S01E03/Reporter/app.js",
     "s01e04h": "node dist/S01E04/Host/app.js",
     "s01e04s": "node dist/S01E04/Server/app.js",
-    "s01e05": "node dist/S01E05/app.js"
+    "s01e05": "node dist/S01E05/app.js",
+    "s02e01s": "node dist/S02E01/Server/app.js",
+    "s02e01h": "node dist/S02E01/Host/app.js"
   },
   "repository": {
     "type": "git",
@@ -31,6 +33,10 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
+    "@langchain/core": "^1.2.1",
+    "@langchain/langgraph": "^1.0.7",
+    "@langchain/mcp-adapters": "^1.1.3",
+    "@langchain/openrouter": "^0.4.3",
     "@modelcontextprotocol/sdk": "^1.27.1",
     "@openrouter/sdk": "^0.9.11",
     "axios": "^1.13.6",
