@@ -11,8 +11,9 @@ import {
   HumanMessage,
   BaseMessage,
 } from "@langchain/core/messages";
-import { prompt } from "./prompt.js";
+import { prompt, promptExtra } from "./prompt.js";
 import { extractFlag } from "../../tools/FlagExtractor.js";
+import { task } from "./task.js";
 
 const MAX_TOOL_STEPS = 100;
 
@@ -45,30 +46,14 @@ async function main() {
     .addEdge("tools", "agent")
     .compile();
 
-  let flag: string | undefined;
-
-  for await (const chunk of await agent.stream(
-    {
-      messages: [
-        new SystemMessage(prompt),
-        new HumanMessage("classify materials"),
-      ],
-    },
-    { recursionLimit: MAX_TOOL_STEPS, streamMode: "updates" },
-  )) {
-    console.log("Step:", chunk);
-    if ("tools" in chunk && chunk.tools) {
-      const messages = chunk.tools.messages;
-      if (Array.isArray(messages)) {
-        for (const msg of messages) {
-          if (!(msg instanceof BaseMessage)) continue;
-          const found = extractFlag(String(msg.content));
-          if (found) flag = found;
-        }
-      }
-    }
-  }
-
+  /*let flag = await task(agent, prompt, MAX_TOOL_STEPS);
+  if (flag) {
+    console.log("✅ Flag found:", flag);
+  } else {
+    console.log("🛑 Flag not found");
+  }*/
+  console.log("Extra task will be executed here...");
+  let flag = await task(agent, promptExtra, MAX_TOOL_STEPS);
   if (flag) {
     console.log("✅ Flag found:", flag);
   } else {

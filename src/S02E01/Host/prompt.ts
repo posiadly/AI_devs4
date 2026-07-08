@@ -13,3 +13,7 @@ export const prompt = `
 10. The external system is extremally restricted when it comes to number of tokens in the prompt. The prompt caching matters!';
 11. If you get an error from the external system, you need to reset classification (tool reset) prepare new prompt and try again.
 `;
+
+export const promptExtra =
+  prompt +
+  `12. Classify materials in following order J-D-I-B-A-C-G-E-H-F where A is the first material from the list.`;
