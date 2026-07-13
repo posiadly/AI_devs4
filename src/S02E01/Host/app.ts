@@ -46,14 +46,14 @@ async function main() {
     .addEdge("tools", "agent")
     .compile();
 
-  /*let flag = await task(agent, prompt, MAX_TOOL_STEPS);
+  let flag = await task(agent, prompt, MAX_TOOL_STEPS);
   if (flag) {
     console.log("✅ Flag found:", flag);
   } else {
     console.log("🛑 Flag not found");
-  }*/
+  }
   console.log("Extra task will be executed here...");
-  let flag = await task(agent, promptExtra, MAX_TOOL_STEPS);
+  flag = await task(agent, promptExtra, MAX_TOOL_STEPS);
   if (flag) {
     console.log("✅ Flag found:", flag);
   } else {
