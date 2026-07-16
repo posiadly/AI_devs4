@@ -15,7 +15,8 @@
     "s01e04s": "node dist/S01E04/Server/app.js",
     "s01e05": "node dist/S01E05/app.js",
     "s02e01s": "node dist/S02E01/Server/app.js",
-    "s02e01h": "node dist/S02E01/Host/app.js"
+    "s02e01h": "node dist/S02E01/Host/app.js",
+    "s02e02": "node dist/S02E02/app.js"
   },
   "repository": {
     "type": "git",
@@ -44,6 +45,7 @@
     "dotenv": "^17.3.1",
     "express": "^5.2.1",
     "geolib": "^3.3.4",
+    "sharp": "^0.35.3",
     "zod": "^4.3.6"
   }
 }
