@@ -3,15 +3,31 @@ import { readPictures } from "./tools/pictureReader.js";
 import { cropPng, splitPngGrid } from "./tools/pngTools.js";
 import { interpretPicture } from "./prompts/interpretPicture.js";
 import fs from "fs";
+import { OpenRouter } from "@openrouter/sdk";
+import { buildMaze } from "./tools/mazeBuilder.js";
+import { createTools } from "./tools/Tools.js";
+import { createAgent } from "../S01E05/agent.js";
+import { Agent } from "./tools/Agent.js";
+import { agentPrompt } from "./prompts/agentPrompt.js";
+import { TaskReporter } from "./tools/TaskReporter.js";
+import { extractFlag } from "../tools/FlagExtractor.js";
 
 async function main() {
-  const apiKey = requireEnv("OPENROUTER_API_KEY");
+  const openRouterApiKey = requireEnv("OPENROUTER_API_KEY");
   const mapUrl = requireEnv("S02E02_MAP_URL");
+  const verificationUrl = requireEnv("VERIFICATION_URL");
+  const apiKey = requireEnv("API_KEY");
+
+  const taskReporter = new TaskReporter(mapUrl, verificationUrl, apiKey);
+  await taskReporter.reset();
+
   const map = await fetch(mapUrl);
   if (!map.ok) {
     throw new Error(`Failed to fetch map: ${map.status}`);
   }
-
+  const openRouter = new OpenRouter({
+    apiKey: openRouterApiKey,
+  });
   const arrayBuffer = await map.arrayBuffer();
   const riddleBoxBuffer = await cropPng(arrayBuffer, {
     left: 238,
@@ -25,13 +41,25 @@ async function main() {
   const crossPattern = fs.readFileSync("src/S02E02/files/cross.png").buffer;
 
   const content = await readPictures(
-    apiKey,
+    openRouter,
     crossPattern,
     tiles,
     interpretPicture,
-    "openai/gpt-5",
+    "openai/gpt-5.5",
   );
-  console.log(JSON.stringify(content));
+  const maze = buildMaze(content.pictures);
+
+  const tools = createTools(maze, taskReporter);
+  const agent = new Agent(openRouter);
+
+  const result = await agent.perform(agentPrompt, 50, "openai/gpt-5.5", tools);
+  console.log(result);
+  const flag = extractFlag(result);
+  if (flag) {
+    console.log("✅ Flag found:", flag);
+  } else {
+    console.log("🛑 Flag not found");
+  }
 }
 
 main().catch((error) => {

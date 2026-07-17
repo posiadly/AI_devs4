@@ -10,7 +10,7 @@ import {
 } from "../schemas/interpretPicture.js";
 
 export async function readPictures(
-  apiKey: string,
+  openRouter: OpenRouter,
   boxWithFullCross: ArrayBuffer,
   boxesToRecognize: ArrayBuffer[],
   prompt: string,
@@ -22,10 +22,6 @@ export async function readPictures(
   };
   const boxWithFullCrossMessage = prepareOnePicture(boxWithFullCross);
   const boxesMessages = boxesToRecognize.map(prepareOnePicture);
-
-  const openRouter = new OpenRouter({
-    apiKey,
-  });
   const response = await openRouter.chat.send({
     chatGenerationParams: {
       model: model,
