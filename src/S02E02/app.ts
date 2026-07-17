@@ -11,6 +11,7 @@ import { Agent } from "./tools/Agent.js";
 import { agentPrompt } from "./prompts/agentPrompt.js";
 import { TaskReporter } from "./tools/TaskReporter.js";
 import { extractFlag } from "../tools/FlagExtractor.js";
+import { extraTask } from "./tools/extraTast.js";
 
 async function main() {
   const openRouterApiKey = requireEnv("OPENROUTER_API_KEY");
@@ -21,7 +22,8 @@ async function main() {
   const taskReporter = new TaskReporter(mapUrl, verificationUrl, apiKey);
   await taskReporter.reset();
 
-  const map = await fetch(mapUrl);
+  let map = await fetch(mapUrl);
+
   if (!map.ok) {
     throw new Error(`Failed to fetch map: ${map.status}`);
   }
@@ -54,7 +56,18 @@ async function main() {
 
   const result = await agent.perform(agentPrompt, 50, "openai/gpt-5.5", tools);
   console.log(result);
-  const flag = extractFlag(result);
+  let flag = extractFlag(result);
+  if (flag) {
+    console.log("✅ Flag found:", flag);
+  } else {
+    console.log("🛑 Flag not found");
+  }
+
+  console.log("Extra task");
+
+  map = await fetch(mapUrl);
+  const mapText = await map.text();
+  flag = extractFlag(extraTask(mapText));
   if (flag) {
     console.log("✅ Flag found:", flag);
   } else {
