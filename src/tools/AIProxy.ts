@@ -42,7 +42,7 @@ export class AIProxy {
       const orchestrationClient = new OrchestrationClient({
         promptTemplating: {
           model: {
-            name: model,
+            name: this.aiCoreModel(model),
           },
           prompt: {
             tools: this.aiCoreTools(request.chatGenerationParams.tools),
@@ -73,6 +73,9 @@ export class AIProxy {
         content: openRouterResult.choices[0].message.content,
       };
     }
+  }
+  private aiCoreModel(model: string): string {
+    return model.split("/")[1];
   }
   private aiCoreTools(
     tools: ChatGenerationParams["tools"],
@@ -105,18 +108,18 @@ export class AIProxy {
           case "system":
             return {
               role: "system",
-              content: this.toSapContent(message.content),
+              content: message.content as ChatMessageContent,
             };
           case "user":
             return {
               role: "user",
-              content: this.toUserContent(message.content),
+              content: message.content as UserChatMessageContent,
             };
           case "assistant":
             return {
               role: "assistant",
               content: message.content
-                ? this.toSapContent(message.content)
+                ? (message.content as ChatMessageContent)
                 : undefined,
               tool_calls: message.toolCalls?.map((tc) => ({
                 type: tc.type,
@@ -127,22 +130,16 @@ export class AIProxy {
           case "tool":
             return {
               role: "tool",
-              content: this.toSapContent(message.content),
+              content: message.content as ChatMessageContent,
               tool_call_id: message.toolCallId,
             };
           case "developer":
             return {
               role: "developer",
-              content: this.toSapContent(message.content),
+              content: message.content as ChatMessageContent,
             };
         }
       }) ?? []
     );
-  }
-  private toSapContent(content: unknown): ChatMessageContent {
-    return content as ChatMessageContent;
-  }
-  private toUserContent(content: unknown): UserChatMessageContent {
-    return content as UserChatMessageContent;
   }
 }
