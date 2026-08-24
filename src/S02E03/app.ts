@@ -5,6 +5,8 @@ import { Agent } from "./tools/Agent.js";
 import { getPrompt } from "./tools/prompt.js";
 import { createMainAgentTools } from "./tools/mainAgentTools.js";
 import { AIProxy } from "../tools/AIProxy.js";
+import { extraTask } from "./tools/extraTask.js";
+import { extractFlag } from "../tools/FlagExtractor.js";
 
 async function main() {
   const verificationUrl = requireEnv("VERIFICATION_URL");
@@ -14,13 +16,12 @@ async function main() {
   const openRouterApiKey = requireEnv("OPENROUTER_API_KEY");
   const useAICore = requireEnv("USE_AICORE");
   await downloadLog(failureLogUrl, logLocation);
-
   const openRouter = new OpenRouter({
     apiKey: openRouterApiKey,
   });
   const aiProxy = new AIProxy(openRouter, useAICore === "true");
   const agent = new Agent(aiProxy);
-  const result = await agent.perform(
+  let result = await agent.perform(
     getPrompt("mainAgent"),
     [],
     30,
@@ -28,6 +29,15 @@ async function main() {
     createMainAgentTools(verificationUrl, apiKey, aiProxy, logLocation),
   );
   console.log(result);
+
+  console.log("Extra task");
+  result = await extraTask(verificationUrl, apiKey);
+  const flag = extractFlag(result);
+  if (flag) {
+    console.log("✅ Flag found:", flag);
+  } else {
+    console.log("🛑 Flag not found");
+  }
 }
 
 main().catch((error) => {
