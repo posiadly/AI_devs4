@@ -17,7 +17,8 @@
     "s02e01s": "node dist/S02E01/Server/app.js",
     "s02e01h": "node dist/S02E01/Host/app.js",
     "s02e02": "node dist/S02E02/app.js",
-    "s02e03": "node dist/S02E03/app.js"
+    "s02e03": "node dist/S02E03/app.js",
+    "s02e04": "node dist/S02E04/app.js"
   },
   "repository": {
     "type": "git",
@@ -42,6 +43,7 @@
     "@langchain/openrouter": "^0.4.3",
     "@modelcontextprotocol/sdk": "^1.27.1",
     "@openrouter/sdk": "^0.9.11",
+    "@posiadly/multiagent": "^1.0.0",
     "@sap-ai-sdk/orchestration": "^2.15.0",
     "axios": "^1.13.6",
     "csv-parse": "^6.1.0",
